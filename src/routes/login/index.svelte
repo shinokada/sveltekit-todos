@@ -13,11 +13,13 @@
 <script>
 	import { session } from '$app/stores'
 	import { goto } from '$app/navigation'
+	// import { message } from '../register/index.svelte'
 
 	// Variables bound to respective inputs via bind:value
 	let email
 	let password
 	let error
+	// let notice
 
 	const login = async () => {
 		// Reset error from previous failed attempts
@@ -41,11 +43,11 @@
 				$session.user = data.user
 				goto('/')
 			} else {
-				error = 'An error occured'
+				error = 'Log001: An error occured'
 			}
 		} catch (err) {
 			console.log(err)
-			error = 'An error occured'
+			error = 'Log002: An error occured'
 		}
 	}
 </script>

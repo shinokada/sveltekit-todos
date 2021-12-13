@@ -2,6 +2,17 @@ import stringHash from 'string-hash'
 import * as cookie from 'cookie'
 import { v4 as uuid } from 'uuid'
 import clientPromise from '$lib/db'
+import jwt from 'jsonwebtoken'
+import { sendConfirmationEmail } from '../../lib/nodemailer';
+
+
+import dotenv from 'dotenv'
+dotenv.config()
+
+const secret = process.env['SECRET']
+const user = process.env['MAILTRAP_USER']
+const pass = process.env['MAILTRAP_PASS']
+
 
 export const post = async ({ body }) => {
 	// Connecting to DB
@@ -14,7 +25,8 @@ export const post = async ({ body }) => {
 
 	// If there is, either send status 409 Conflict and inform the user that their email is already taken
 	// or send status 202 or 204 and tell them to double-check on their credentials and try again - it is considered more secure
-	if (user) {
+  if (user) {
+    console.log('User exist.')
 		return {
 			status: 409,
 			body: {
@@ -23,6 +35,8 @@ export const post = async ({ body }) => {
 		}
 	}
 
+  const token = jwt.sign({ email: body.email }, secret)
+  
 	// Add user to DB
 	// All database code can only run inside async functions as it uses await
 	const uid = uuid()
@@ -30,32 +44,41 @@ export const post = async ({ body }) => {
 		_id: uid,
 		name: body.name,
 		email: body.email,
-		password: stringHash(body.password)
-	})
+    password: stringHash(body.password),
+    confirmationCode: token
+  })
+  
+  console.log('Sending to ', body.email)
+  sendConfirmationEmail(
+    body.name,
+    body.email,
+    token
+  );
+  console.log('Mail sent.')
+  
 
 	// Add cookie with user's email to DB
-	// All database code can only run inside async functions as it uses await
-	const cookieId = uuid()
-	await db.collection('cookies').insertOne({
-		cookieId: cookieId,
-		uid: uid
-	})
+	// const cookieId = uuid()
+	// await db.collection('cookies').insertOne({
+	// 	cookieId: cookieId,
+	// 	uid: uid
+	// })
 
 	// Set cookie
 	// If you want cookies to be passed alongside user when they redirect to another website using a link, change sameSite to 'lax'
 	// If you don't want cookies to be valid everywhere in your app, modify the path property accordingly
-	const headers = {
-		'Set-Cookie': cookie.serialize('session_id', cookieId, {
-			httpOnly: true,
-			maxAge: 60 * 60 * 24 * 7,
-			sameSite: 'strict',
-			path: '/'
-		})
-	}
+	// const headers = {
+	// 	'Set-Cookie': cookie.serialize('session_id', cookieId, {
+	// 		httpOnly: true,
+	// 		maxAge: 60 * 60 * 24 * 7,
+	// 		sameSite: 'strict',
+	// 		path: '/'
+	// 	})
+	// }
 
 	return {
 		status: 200,
-		headers,
+		// headers,
 		body: {
 			user: {
 				uid: uid,

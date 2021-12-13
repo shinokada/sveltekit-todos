@@ -4,9 +4,9 @@ import { ObjectId } from 'mongodb'
 export async function get(request) {
 	try {
 		const client = await clientPromise
-		const db = client.db('Todos')
-		const collection = db.collection('todos')
-		const todos = await collection.find({ uid: request.params.uid }).toArray()
+		// const db = client.db('Todos')
+		// const collection = client.db('Todos').collection('todos')
+		const todos = await client.db('Todos').collection('todos').find({ uid: request.params.uid }).toArray()
 
 		return {
 			status: 200,
@@ -19,7 +19,7 @@ export async function get(request) {
 		return {
 			status: 500,
 			body: {
-				error: 'An error occured'
+				error: 'TG001: An error occured'
 			}
 		}
 	}
@@ -48,7 +48,7 @@ export async function post(request) {
 		return {
 			status: 500,
 			body: {
-				error: 'An error occured'
+				error: 'TP001: An error occured'
 			}
 		}
 	}
@@ -76,7 +76,7 @@ export async function put(request) {
 		return {
 			status: 500,
 			body: {
-				error: 'An error occured'
+				error: 'TPU001: An error occured'
 			}
 		}
 	}
@@ -101,7 +101,7 @@ export async function del(request) {
 		return {
 			status: 500,
 			body: {
-				error: 'An error occured'
+				error: 'TD001: An error occured'
 			}
 		}
 	}

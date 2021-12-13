@@ -19,6 +19,7 @@
 	let password
 	let name
 	let error
+	export let message
 
 	const register = async () => {
 		// Reset error from previous failed attempts
@@ -39,15 +40,18 @@
 			})
 
 			if (res.ok) {
-				const data = await res.json()
-				$session.user = data.user
-				goto('/')
+				// const data = await res.json()
+				// $session.user = data.user
+				// goto('/login')
+				message = 'User was registered successfully! Please check your email'
 			} else {
-				error = 'An error occured'
+				const data = await res.json()
+				console.log('message: ', data.message)
+				error = data.message
 			}
 		} catch (err) {
 			console.log(err)
-			error = 'An error occured'
+			error = 'Reg001: An error occured.'
 		}
 	}
 </script>
@@ -57,24 +61,29 @@
 </svelte:head>
 
 <section>
-	<form on:submit|preventDefault={register}>
-		<div class="heading">
-			<a class="back" href="/"><i class="bi bi-arrow-left" /></a>
-			<h2>Register</h2>
-		</div>
-		<input type="text" name="name" placeholder="Enter your name" bind:value={name} />
-		<input type="email" name="email" placeholder="Enter your email" bind:value={email} />
-		<input
-			type="password"
-			name="password"
-			placeholder="Enter your password"
-			bind:value={password}
-		/>
-		{#if error}
-			<p>{error}</p>
-		{/if}
-		<button type="submit">Register</button>
-	</form>
+	{#if message}
+		{message}<br />
+		<a href="/">Home</a>
+	{:else}
+		<form on:submit|preventDefault={register}>
+			<div class="heading">
+				<a class="back" href="/"><i class="bi bi-arrow-left" /></a>
+				<h2>Register</h2>
+			</div>
+			<input type="text" name="name" placeholder="Enter your name" bind:value={name} />
+			<input type="email" name="email" placeholder="Enter your email" bind:value={email} />
+			<input
+				type="password"
+				name="password"
+				placeholder="Enter your password"
+				bind:value={password}
+			/>
+			{#if error}
+				<p>{error}</p>
+			{/if}
+			<button type="submit">Register</button>
+		</form>
+	{/if}
 </section>
 
 <style>
