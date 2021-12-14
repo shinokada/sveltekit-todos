@@ -57,7 +57,8 @@ export const post = async ({ body }) => {
   );
   console.log('Mail sent.')
   
-
+  // moved to confirmation page
+  
 	// Add cookie with user's email to DB
 	// const cookieId = uuid()
 	// await db.collection('cookies').insertOne({

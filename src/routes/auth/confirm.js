@@ -2,6 +2,10 @@ import clientPromise from '$lib/db'
 import * as cookie from 'cookie'
 import { v4 as uuid } from 'uuid'
 
+
+// todo 
+// if status is Active redirect to home page
+
 export const post = async (context) => {
   const confirmationCode = JSON.parse(context.body)
   // console.log('mycode: ', confirmationCode)
@@ -11,7 +15,6 @@ export const post = async (context) => {
     const user = await db.collection('users').findOne({
       confirmationCode
     })
-    // console.log('user: ', user)
 
     if (!user) {
       return {
@@ -21,7 +24,10 @@ export const post = async (context) => {
         }
       }
     } else {
-      const response = updateStatus(user)
+      // update user status
+      updateStatus(user)
+
+      // create a cookie and store it in the db.
       const cookieId = uuid()
       await db.collection('cookies').insertOne({ cookieId: cookieId, uid: user._id })
 
@@ -47,13 +53,6 @@ export const post = async (context) => {
           }
         }
       }
-  //     return {
-  //       status: 200,
-  //       body: {
-  //         update:response,
-  //         message: 'Email is confirmed. Please log in.'
-  //       }
-  //     }
     }
   } catch (err) {
     console.log(err)
@@ -74,6 +73,5 @@ async function updateStatus (user) {
     { _id: user._id },
     { $set: { status: "Active" } }
   )
-
   console.log('Updated')
 }

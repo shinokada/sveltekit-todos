@@ -13,18 +13,19 @@
 <script>
 	import { session } from '$app/stores'
 	import { goto } from '$app/navigation'
+	// import { errorStore } from '$lib/stores.js'
+	console.log('session: ', $session.user)
+	let error
 
 	// Variables bound to respective inputs via bind:value
 	let email
 	let password
 	let name
-	let error
+
 	export let message
 
 	const register = async () => {
 		// Reset error from previous failed attempts
-		error = undefined
-
 		try {
 			// POST method to src/routes/auth/register.js endpoint
 			const res = await fetch('/auth/register', {
@@ -61,29 +62,36 @@
 </svelte:head>
 
 <section>
-	{#if message}
-		{message}<br />
-		<a href="/">Home</a>
-	{:else}
-		<form on:submit|preventDefault={register}>
-			<div class="heading">
-				<a class="back" href="/"><i class="bi bi-arrow-left" /></a>
-				<h2>Register</h2>
+	<form on:submit|preventDefault={register}>
+		{#if message}
+			<div class="message">
+				{message}
 			</div>
-			<input type="text" name="name" placeholder="Enter your name" bind:value={name} />
-			<input type="email" name="email" placeholder="Enter your email" bind:value={email} />
-			<input
-				type="password"
-				name="password"
-				placeholder="Enter your password"
-				bind:value={password}
-			/>
-			{#if error}
-				<p>{error}</p>
-			{/if}
-			<button type="submit">Register</button>
-		</form>
-	{/if}
+		{/if}
+		<div class="heading">
+			<a class="back" href="/"><i class="bi bi-arrow-left" /></a>
+			<h2>Register</h2>
+		</div>
+		<input type="text" required name="name" placeholder="Enter your name" bind:value={name} />
+		<input
+			type="email"
+			required
+			name="email"
+			placeholder="Enter your email"
+			bind:value={email}
+		/>
+		<input
+			type="password"
+			required
+			name="password"
+			placeholder="Enter your password"
+			bind:value={password}
+		/>
+		{#if error}
+			<p>{error}</p>
+		{/if}
+		<button type="submit">Register</button>
+	</form>
 </section>
 
 <style>
@@ -110,7 +118,7 @@
 		margin-top: 10px;
 		border-radius: 12px;
 		padding: 10px;
-		background: var(--bg-color-1);
+		background: #fff;
 	}
 
 	button:hover {
@@ -136,5 +144,12 @@
 	}
 	.back:hover {
 		color: var(--font-color);
+	}
+	.bi-arrow-left {
+		color: #fff;
+		font-weight: 900;
+	}
+	.message {
+		color: #fff;
 	}
 </style>

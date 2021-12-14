@@ -56,7 +56,7 @@
 	}
 
 	.background {
-		background: var(--bg-color-1);
+		background: #fff;
 		height: 100%;
 		width: 100%;
 	}

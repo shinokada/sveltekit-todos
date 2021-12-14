@@ -8,32 +8,24 @@
 <script>
 	import { onMount } from 'svelte'
 	import { page } from '$app/stores'
+	import Login from '../login/index.svelte'
 	import { goto } from '$app/navigation'
-	import { session } from '$app/stores'
+
 	// export let slug
 	const confirmationCode = $page.params.slug
-	let user
+	let success
 
 	onMount(async () => {
 		const res = await fetch('/auth/confirm', {
 			method: 'POST',
 			body: JSON.stringify(confirmationCode)
 		})
-		// const json = await res.json()
-		// console.log('res: ', json)
 		if (res.ok) {
 			// get user details and save it to session then redirect to login
 			// const res = await fetch('/user')
 			const json = await res.json()
 			console.log('res: ', json)
-			// user = await res.json()
-			// session.user = {
-			// 	uid: user._id,
-			// 	name: user.name,
-			// 	email: user.email
-			// }
-
-			// goto('/')
+			success = 'Please log in.'
 		} else {
 			error = 'Not able to find your details.'
 		}
@@ -42,4 +34,25 @@
 	})
 </script>
 
-<h1>Confirmation Page 1</h1>
+<div class="confirm">
+	<section>
+		{#if success}
+			<h1>Your email is confirmed. <a href="/login">Go to log in</a></h1>
+		{:else}
+			<h1>Error</h1>
+		{/if}
+	</section>
+</div>
+
+<style>
+	section {
+		width: 100%;
+		height: 100vh;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+	.confirm {
+		padding: 20px;
+	}
+</style>

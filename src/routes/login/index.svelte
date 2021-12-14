@@ -13,7 +13,6 @@
 <script>
 	import { session } from '$app/stores'
 	import { goto } from '$app/navigation'
-	// import { message } from '../register/index.svelte'
 
 	// Variables bound to respective inputs via bind:value
 	let email
@@ -43,11 +42,11 @@
 				$session.user = data.user
 				goto('/')
 			} else {
-				error = 'Log001: An error occured'
+				error = 'Log001: Pleas try it again. Or you need to register.'
 			}
 		} catch (err) {
 			console.log(err)
-			error = 'Log002: An error occured'
+			error = 'Log002: Pleas try it again. Or you need to register.'
 		}
 	}
 </script>
@@ -58,9 +57,16 @@
 			<a class="back" href="/"><i class="bi bi-arrow-left" /></a>
 			<h2>Login</h2>
 		</div>
-		<input type="email" name="email" placeholder="Enter your email" bind:value={email} />
+		<input
+			type="email"
+			required
+			name="email"
+			placeholder="Enter your email"
+			bind:value={email}
+		/>
 		<input
 			type="password"
+			required
 			name="password"
 			placeholder="Enter your password"
 			bind:value={password}
@@ -100,7 +106,7 @@
 		margin-top: 10px;
 		border-radius: 12px;
 		padding: 10px;
-		background: var(--bg-color-1);
+		background: #fff;
 	}
 
 	button:hover {

@@ -30,7 +30,7 @@
 
 	a {
 		color: inherit;
-		background: var(--bg-color-1);
+		background: #fff;
 		text-decoration: none;
 		padding: 10px;
 		border-radius: 12px;
@@ -40,5 +40,6 @@
 
 	a:hover {
 		background: var(--bg-color-1-5);
+		color: #fff;
 	}
 </style>

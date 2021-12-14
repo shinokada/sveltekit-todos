@@ -3,14 +3,14 @@
 	font-weight: 300;
 	font-size: 112.5%;
 	flex-shrink: 0;
-	--bg-color-1: hsl(200, 17%, 9%);
-	--bg-color-1-5: hsl(200, 17%, 10.5%);
+	--bg-color-1: hsl(180, 1%, 75%);
+	--bg-color-1-5: rgb(0, 87, 87);
 	--bg-color-2: hsl(200, 17%, 12%);
 	--bg-color-2-5: hsl(200, 17%, 14.5%);
 	--bg-color-3: hsl(200, 17%, 17%);
 	--bg-color-3-5: hsl(200, 17%, 21.5%);
 	--sub-color: hsl(200, 17%, 26%);
-	--font-color: hsl(200, 37%, 68%);
+	--font-color: hsl(201, 42%, 44%);
 }
 
 * {
@@ -21,7 +21,7 @@
 body {
 	min-height: 100vh;
 	margin: 0;
-	background: var(--bg-color-2);
+	background: #fff;
 	color: var(--font-color);
 	overflow: hidden;
 }
