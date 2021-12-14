@@ -1,8 +1,8 @@
 <section>
 	<div class="welcome">
 		<h2>Welcome to Sveltekit Todos</h2>
-		<a href="/login">Login</a>
-		<a href="/register">Register</a>
+		<a href="/auth/login">Login</a>
+		<a href="/auth/register">Register</a>
 	</div>
 </section>
 

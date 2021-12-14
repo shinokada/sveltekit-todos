@@ -13,50 +13,65 @@
 <script>
 	import { session } from '$app/stores'
 	import { goto } from '$app/navigation'
+	// import { errorStore } from '$lib/stores.js'
+	console.log('session: ', $session.user)
+	let error
 
 	// Variables bound to respective inputs via bind:value
 	let email
 	let password
-	let error
-	// let notice
+	let name
 
-	const login = async () => {
+	export let message
+
+	const register = async () => {
 		// Reset error from previous failed attempts
-		error = undefined
-
-		// POST method to src/routes/auth/login.js endpoint
 		try {
-			const res = await fetch('/auth/login', {
+			// POST method to src/routes/auth/register.js endpoint
+			const res = await fetch('/auth/register', {
 				method: 'POST',
 				body: JSON.stringify({
 					email,
-					password
+					password,
+					name
 				}),
 				headers: {
 					'Content-Type': 'application/json'
 				}
 			})
 
+			console.log('from 001')
+
 			if (res.ok) {
-				const data = await res.json()
-				$session.user = data.user
-				goto('/')
+				message = 'User was registered successfully! Please check your email'
 			} else {
-				error = 'Log001: Pleas try it again. Or you need to register.'
+				const data = await res.json()
+				console.log('message: ', data.message)
+				error = data.message
 			}
 		} catch (err) {
 			console.log(err)
-			error = 'Log002: Pleas try it again. Or you need to register.'
+			error = 'Reg001: An error occured.'
 		}
 	}
 </script>
 
+<svelte:head>
+	<title>Register</title>
+</svelte:head>
+
 <section>
-	<form on:submit|preventDefault={login}>
+	<form on:submit|preventDefault={register}>
+		{#if message}
+			<div class="message">
+				{message}
+			</div>
+		{/if}
 		<div class="heading">
 			<a class="back" href="/"><i class="bi bi-arrow-left" /></a>
-			<h2>Login</h2>
+			<h2>Register</h2>
 		</div>
+		<input type="text" required name="name" placeholder="Enter your name" bind:value={name} />
 		<input
 			type="email"
 			required
@@ -74,13 +89,9 @@
 		{#if error}
 			<p>{error}</p>
 		{/if}
-		<button type="submit">Login</button>
+		<button type="submit">Register</button>
 	</form>
 </section>
-
-<svelte:head>
-	<title>Login</title>
-</svelte:head>
 
 <style>
 	section {
@@ -132,5 +143,12 @@
 	}
 	.back:hover {
 		color: var(--font-color);
+	}
+	.bi-arrow-left {
+		color: #fff;
+		font-weight: 900;
+	}
+	.message {
+		color: #fff;
 	}
 </style>

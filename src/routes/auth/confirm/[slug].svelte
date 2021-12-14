@@ -8,7 +8,6 @@
 <script>
 	import { onMount } from 'svelte'
 	import { page } from '$app/stores'
-	import Login from '../login/index.svelte'
 	import { goto } from '$app/navigation'
 
 	// export let slug
@@ -37,7 +36,7 @@
 <div class="confirm">
 	<section>
 		{#if success}
-			<h1>Your email is confirmed. <a href="/login">Go to log in</a></h1>
+			<h1>Your email is confirmed. <a href="/auth/login">Go to log in</a></h1>
 		{:else}
 			<h1>Error</h1>
 		{/if}

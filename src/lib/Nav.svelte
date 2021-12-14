@@ -23,7 +23,7 @@
 	}
 
 	a {
-		color: inherit;
+		color: #fff;
 		text-decoration: none;
 		padding: 10px;
 		margin: 3px 0;

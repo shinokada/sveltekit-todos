@@ -44,7 +44,7 @@
 <style>
 	main {
 		width: 100%;
-		background: var(--bg-color-1);
+		background: #fff;
 		height: calc(100vh - 40px);
 		border-radius: 18px;
 		margin: 20px;

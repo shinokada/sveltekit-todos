@@ -1,18 +1,13 @@
 import stringHash from 'string-hash'
-import * as cookie from 'cookie'
+// import * as cookie from 'cookie'
 import { v4 as uuid } from 'uuid'
 import clientPromise from '$lib/db'
 import jwt from 'jsonwebtoken'
-import { sendConfirmationEmail } from '../../lib/nodemailer';
-
-
+import { sendConfirmationEmail } from '$lib/nodemailer';
 import dotenv from 'dotenv'
 dotenv.config()
 
 const secret = process.env['SECRET']
-const user = process.env['MAILTRAP_USER']
-const pass = process.env['MAILTRAP_PASS']
-
 
 export const post = async ({ body }) => {
 	// Connecting to DB

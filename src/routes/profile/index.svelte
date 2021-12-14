@@ -73,7 +73,12 @@
 
 	button {
 		background: var(--bg-color-2);
-		padding: 10px;
+		padding: 0.7rem 1.5rem;
 		border-radius: 12px;
+		color: #fff;
+	}
+	button:hover {
+		color: #000;
+		background-color: rgb(154, 211, 242);
 	}
 </style>
