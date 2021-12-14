@@ -45,7 +45,8 @@ export const post = async ({ body }) => {
 		name: body.name,
 		email: body.email,
     password: stringHash(body.password),
-    confirmationCode: token
+    confirmationCode: token,
+    status: "Pending"
   })
   
   console.log('Sending to ', body.email)

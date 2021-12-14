@@ -11,7 +11,7 @@ export const get = async (context) => {
 		return {
 			status: 401,
 			body: {
-				message: 'Unauthorized'
+				message: 'You are unauthorized'
 			}
 		}
 	}
