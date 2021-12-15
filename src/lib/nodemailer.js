@@ -2,14 +2,19 @@ import nodemailer from 'nodemailer'
 import dotenv from 'dotenv'
 dotenv.config()
 
-const user = process.env['MAILTRAP_USER']
-const pass = process.env['MAILTRAP_PASS']
-const host = process.env['HOST']
+// const user = process.env['MAILTRAP_USER']
+// const pass = process.env['MAILTRAP_PASS']
+const user = process.env['PEPI_USER']
+const pass = process.env['PEPI_PASS']
+// const host = process.env['LOCAL_HOST']
+const host = process.env['APP_URL']
 const email_from = process.env['EMAIL_FROM']
 const name_from = process.env['NAME_FROM']
+const pepi_host = process.env['PEPI_HOST']
 
 const transport = nodemailer.createTransport({
-  host: "smtp.mailtrap.io",
+  // host: "smtp.mailtrap.io",
+  host: pepi_host,
   port: 2525,
   auth: {
     user,
