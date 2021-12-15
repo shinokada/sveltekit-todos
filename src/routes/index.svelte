@@ -5,7 +5,6 @@
 <script>
 	import Welcome from '$lib/Welcome.svelte'
 	import { session } from '$app/stores'
-	console.log('session: ', $session.user)
 </script>
 
 <svelte:head>
@@ -21,7 +20,7 @@
 					<img src="svelte-welcome.png" alt="Welcome" />
 				</picture>
 			</div>
-			Todos
+			Auth
 		</h1>
 	</div>
 {:else}

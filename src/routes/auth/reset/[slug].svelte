@@ -1,33 +1,25 @@
-<script context="module">
-	export async function load({ session }) {
-		if (session.user) {
-			return {
-				status: 302,
-				redirect: '/'
-			}
-		}
-		return {}
-	}
-</script>
-
 <script>
-	let error
-	// Variables bound to respective inputs via bind:value
-	let email
+	import { page } from '$app/stores'
+	import jwt_decode from 'jwt-decode'
+
 	let password
-	let name
+	let confirmpw
+	let email
+	let error
+	let message
+	let decoded
 
-	export let message
+	const token = $page.params.slug
+	decoded = jwt_decode(token)
+	email = decoded.email
 
-	const register = async () => {
+	const resetpw = async () => {
 		try {
-			// POST method to src/routes/auth/register.js endpoint
-			const res = await fetch('/auth/register', {
-				method: 'POST',
+			const res = await fetch('/auth/reset', {
+				method: 'PUT',
 				body: JSON.stringify({
-					email,
-					password,
-					name
+					email: email,
+					password: password
 				}),
 				headers: {
 					'Content-Type': 'application/json'
@@ -35,10 +27,7 @@
 			})
 
 			if (res.ok) {
-				message = 'User was registered successfully! Please check your email'
-				email = ''
-				name = ''
-				password = ''
+				message = 'Your password is updated. Please go to login.'
 			} else {
 				const data = await res.json()
 				console.log('message: ', data.message)
@@ -46,45 +35,41 @@
 			}
 		} catch (err) {
 			console.log(err)
-			error = 'RES001: An error occured.'
+			error = `RES001: An error occured. ${err}`
 		}
+		password = ''
+		confirmpw = ''
 	}
 </script>
 
-<svelte:head>
-	<title>Register</title>
-</svelte:head>
-
 <section>
-	<form on:submit|preventDefault={register}>
-		{#if message}
-			<div class="message">
-				{message}
-			</div>
-		{/if}
+	<form on:submit|preventDefault={resetpw}>
 		<div class="heading">
 			<a class="back" href="/"><i class="bi bi-arrow-left" /></a>
-			<h2>Register</h2>
+			<h2>Reset password</h2>
 		</div>
-		<input type="text" required name="name" placeholder="Enter your name" bind:value={name} />
 		<input
-			type="email"
-			required
-			name="email"
-			placeholder="Enter your email"
-			bind:value={email}
-		/>
-		<input
-			type="password"
+			type="text"
 			required
 			name="password"
-			placeholder="Enter your password"
+			placeholder="Enter your password."
 			bind:value={password}
 		/>
+		<input
+			type="text"
+			required
+			name="confirmpw"
+			placeholder="Confirm your password."
+			bind:value={confirmpw}
+		/>
+		<input type="hidden" required name="email" bind:value={email} />
 		{#if error}
 			<p>{error}</p>
 		{/if}
-		<button type="submit">Register</button>
+		{#if message}
+			<p>{message}</p>
+		{/if}
+		<button type="submit">Reset</button>
 	</form>
 </section>
 
@@ -138,9 +123,5 @@
 	}
 	.back:hover {
 		color: var(--font-color);
-	}
-
-	.message {
-		color: #fff;
 	}
 </style>

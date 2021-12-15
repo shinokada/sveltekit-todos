@@ -8,7 +8,7 @@ export const post = async ({ body }) => {
 	const db = client.db('Todos')
 
 	const user = await db.collection('users').findOne({ email: body.email })
-  console.log('user: ', user)
+  
 	if (!user) {
 		return {
 			status: 401,
@@ -25,23 +25,18 @@ export const post = async ({ body }) => {
 				message: 'Unauthorized'
 			}
 		}
-	}
+  }
 
+  if (user.status !== 'Active') {
+		return {
+			status: 401,
+			body: {
+				message: 'Please confirm your email before log in.'
+			}
+		}
+  }
+  
 	const cookieId = uuid()
-
-	/*
-	// Look for existing email to avoid duplicate entries
-	const duplicateUser = await db.collection('cookies').findOne({ uid: user._id })
-
-	// If there is user with cookie, update the cookie, otherwise create a new DB entry
-	if (duplicateUser) {
-		await db
-			.collection('cookies')
-			.updateOne({ uid: user._id }, { $set: { cookieId: cookieId } })
-	} else {
-		await db.collection('cookies').insertOne({ cookieId: cookieId, uid: user._id })
-	}
-	*/
   
 	await db.collection('cookies').insertOne({ cookieId: cookieId, uid: user._id })
 

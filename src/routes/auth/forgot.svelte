@@ -1,36 +1,18 @@
-<script context="module">
-	export async function load({ session }) {
-		if (session.user) {
-			return {
-				status: 302,
-				redirect: '/'
-			}
-		}
-		return {}
-	}
-</script>
-
 <script>
-	import { session } from '$app/stores'
-	import { goto } from '$app/navigation'
+	import { page } from '$app/stores'
 
-	// Variables bound to respective inputs via bind:value
+	const confirmationCode = $page.params.slug
 	let email
-	let password
 	let error
-	// let notice
+	let message
+	let data
 
-	const login = async () => {
-		// Reset error from previous failed attempts
-		error = undefined
-
-		// POST method to src/routes/auth/login.js endpoint
+	const forgot = async () => {
 		try {
-			const res = await fetch('/auth/login', {
+			const res = await fetch('/auth/forgot', {
 				method: 'POST',
 				body: JSON.stringify({
-					email,
-					password
+					email
 				}),
 				headers: {
 					'Content-Type': 'application/json'
@@ -38,26 +20,25 @@
 			})
 
 			if (res.ok) {
-				const data = await res.json()
-				$session.user = data.user
-				goto('/')
+				message = 'Please check your email'
+				email = ''
 			} else {
 				const data = await res.json()
-				console.log(data)
-				error = `LOS001: ${data.message}`
+				console.log('message: ', data.message)
+				error = data.message
 			}
 		} catch (err) {
 			console.log(err)
-			error = 'LOS002: Pleas try it again.'
+			error = `FOS001: An error occured. ${err}`
 		}
 	}
 </script>
 
 <section>
-	<form on:submit|preventDefault={login}>
+	<form on:submit|preventDefault={forgot}>
 		<div class="heading">
 			<a class="back" href="/"><i class="bi bi-arrow-left" /></a>
-			<h2>Login</h2>
+			<h2>Forgot password</h2>
 		</div>
 		<input
 			type="email"
@@ -66,23 +47,21 @@
 			placeholder="Enter your email"
 			bind:value={email}
 		/>
-		<input
-			type="password"
-			required
-			name="password"
-			placeholder="Enter your password"
-			bind:value={password}
-		/>
+		{#if data}
+			<p>{data}</p>
+		{/if}
+		{#if data}
+			<p>{message}</p>
+		{/if}
 		{#if error}
 			<p>{error}</p>
 		{/if}
-		<button type="submit">Login</button>
-		<a class="forgot" href="/auth/forgot">Forgot password</a>
+		<button type="submit">Send recovery email</button>
 	</form>
 </section>
 
 <svelte:head>
-	<title>Login</title>
+	<title>Forgot password</title>
 </svelte:head>
 
 <style>
@@ -135,10 +114,5 @@
 	}
 	.back:hover {
 		color: var(--font-color);
-	}
-	.forgot {
-		color: #fff;
-		text-decoration: none;
-		margin: 20px 0;
 	}
 </style>

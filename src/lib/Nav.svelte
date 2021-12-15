@@ -1,16 +1,18 @@
 <script>
-	import { page } from '$app/stores'
+	import { page, session } from '$app/stores'
 </script>
 
 <nav>
 	<div class="header" href="/">
 		<img src="svelte-logo.svg" alt="SvelteKit" />
-		<h1>Todos</h1>
+		<h1>Auth</h1>
 	</div>
 	<a class:active={$page.path === '/'} sveltekit:prefetch href="/">Home</a>
 	<a class:active={$page.path === '/about'} sveltekit:prefetch href="/about">About</a>
-	<a class:active={$page.path === '/todos'} sveltekit:prefetch href="/todos">Todos</a>
-	<a class:active={$page.path === '/profile'} sveltekit:prefetch href="/profile">Profile</a>
+	{#if $session.user}
+		<a class:active={$page.path === '/todos'} sveltekit:prefetch href="/todos">Todos</a>
+		<a class:active={$page.path === '/profile'} sveltekit:prefetch href="/profile">Profile</a>
+	{/if}
 </nav>
 
 <style>

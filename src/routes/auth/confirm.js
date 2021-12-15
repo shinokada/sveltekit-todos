@@ -59,7 +59,7 @@ export const post = async (context) => {
     return {
       status: 500,
       body: {
-        error: 'Con001: An error occured'
+        error: 'COJ001: An error occured'
       }
     }
   }
@@ -73,5 +73,4 @@ async function updateStatus (user) {
     { _id: user._id },
     { $set: { status: "Active" } }
   )
-  console.log('Updated')
 }

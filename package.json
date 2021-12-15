@@ -25,6 +25,7 @@
     "cookie": "^0.4.1",
     "dotenv": "^10.0.0",
     "jsonwebtoken": "^8.5.1",
+    "jwt-decode": "^3.1.2",
     "mongodb": "^4.1.4",
     "nodemailer": "^6.7.2",
     "string-hash": "^1.1.3",

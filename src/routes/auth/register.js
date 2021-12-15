@@ -21,7 +21,6 @@ export const post = async ({ body }) => {
 	// If there is, either send status 409 Conflict and inform the user that their email is already taken
 	// or send status 202 or 204 and tell them to double-check on their credentials and try again - it is considered more secure
   if (user) {
-    console.log('User exist.')
 		return {
 			status: 409,
 			body: {
@@ -44,7 +43,6 @@ export const post = async ({ body }) => {
     status: "Pending"
   })
   
-  console.log('Sending to ', body.email)
   sendConfirmationEmail(
     body.name,
     body.email,

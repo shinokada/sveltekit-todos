@@ -10,7 +10,6 @@
 	import { page } from '$app/stores'
 	import { goto } from '$app/navigation'
 
-	// export let slug
 	const confirmationCode = $page.params.slug
 	let success
 
